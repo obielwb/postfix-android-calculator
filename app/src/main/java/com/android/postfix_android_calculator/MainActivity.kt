@@ -17,7 +17,11 @@ class MainActivity : AppCompatActivity() {
         operacoesGridView = findViewById(R.id.operacoesGridView)
         listaOperacoes = ArrayList<GridViewModal>()
 
-        val operacoes = arrayOf("1", "2", "3", "4", "5", "=")
+        val operacoes = arrayOf("^", "/", "*", "-",
+                                "7", "8", "9", "+",
+                                "4", "5", "6", ".",
+                                "1", "2", "3", "(",
+                                "0", "=", "C", ")")
 
         for (operacao in operacoes) {
             listaOperacoes = listaOperacoes + GridViewModal(operacao)
