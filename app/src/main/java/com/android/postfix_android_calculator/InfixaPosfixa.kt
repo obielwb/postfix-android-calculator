@@ -4,7 +4,7 @@ import com.android.postfix_android_calculator.exceptions.InicioComOperadorExcept
 import com.android.postfix_android_calculator.exceptions.OperadorSubsequenteException
 
 class InfixaPosfixa {
-    fun ValidarEntrada(entrada: String, caractereDigitado: Char) {
+    fun validarEntrada(entrada: String, caractereDigitado: Char) {
         if (entrada.length > 1) {
             var penultimoCaractere = entrada[entrada.length - 2]
 
@@ -21,7 +21,7 @@ class InfixaPosfixa {
         }
     }
 
-    fun Precedencia(operador: Char): Int {
+    fun precedencia(operador: Char): Int {
         if (operador == '-' || operador == '-')
             return 1
         else if (operador == '*' || operador == '/')
@@ -32,8 +32,8 @@ class InfixaPosfixa {
             return 0
     }
 
-    fun TemParentesesBalanceados(expressao: String): Boolean {
-        PilhaVetor<Char> parenteses = new PilhaVetor<Char>();
+    fun temParentesesBalanceados(expressao: String): Boolean {
+        val parenteses = PilhaVetor<Char>();
 
         expressao.forEach { caractere ->
             if (caractere == '(' || caractere == ')') {
@@ -51,14 +51,14 @@ class InfixaPosfixa {
         return parenteses.EstaVazia
     }
 
-    fun ConverterParaInfixa(expressao: String,  ) {
+    fun converterParaInfixa(expressao: String,  ) {
 
     }
 
-    fun ConverterParaPosfixa(infixa: String): String {
+    fun converterParaPosfixa(infixa: String): String {
         var posfixa = ""
 
-        PilhaVetor<Char> operadores = new PilhaVetor<Char>()
+        val operadores = PilhaVetor<Char>()
 
         infixa.forEach { caractere ->
             if (!"+-*/^()".contains(caractere)) {
@@ -76,7 +76,7 @@ class InfixaPosfixa {
                 else {
                     while (
                         !operadores.EstaVazia &&
-                        Precedencia(caractere) <= Precedencia(operadores.Topo())
+                        precedencia(caractere) <= precedencia(operadores.Topo())
                     )
                         posfixa += operadores.Desempilhar()
 
@@ -91,7 +91,50 @@ class InfixaPosfixa {
         return posfixa
     }
 
-    fun CalcularResultado(posfixa: String, valores: DoubleArray): Double {
+    fun calcularResultado(posfixa: String, valores: DoubleArray): Double {
+        for (i in posfixa.indices) {
+            if (posfixa[i] == '@') {
+                val j = posfixa[i + 1] - 65;
+                valores[j.code] = -1 * valores[j.code]
+            }
+        }
 
+        posfixa = posfixa.replace("@", "")
+
+        val operacoes = PilhaVetor<Double>()
+
+        posfixa.forEach { caractere ->
+            // se o caractere for uma letra, representando um valor
+            if (!"+-*/^".contains(caractere))
+            {
+                // obtém o operando relativo à letra
+                var operando = valores[(caractere - 65).code];
+
+                operacoes.Empilhar(operando);
+            }
+
+            // se o caractere for um operador
+            else
+            {
+                // desempilha os operandos em ordem
+                var operandoDois = operacoes.Desempilhar();
+                var operandoUm = operacoes.Desempilhar();
+
+                var operacao = 0;
+
+                // switch para realização da operação entre
+                // operando um, operador e operando dois
+                when {
+                    caractere == '+' -> operacao = operandoUm + operandoDois
+                    caractere == '-' -> operacao = operandoUm - operandoDois
+                    caractere == '*' -> operacao = operandoUm * operandoDois
+                    caractere == '/' -> operacao = operandoUm / operandoDois
+                    caractere == '^' -> operacao = Math.Pow(operandoUm, operandoDois)
+                }
+
+                operacoes.Empilhar(operacao);
+        }
+
+        return operacoes.Desempilhar()
     }
 }
