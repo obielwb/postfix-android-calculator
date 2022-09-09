@@ -38,13 +38,13 @@ class InfixaPosfixa {
         expressao.forEach { caractere ->
             if (caractere == '(' || caractere == ')') {
                 if (parenteses.EstaVazia)
-                    parenteses.Empilhar(caractere)
+                    parenteses.empilhar(caractere)
 
                 else if (parenteses.Topo() == '(' && caractere == ')')
-                    parenteses.Desempilhar()
+                    parenteses.desempilhar()
 
                 else
-                    parenteses.Empilhar(caractere)
+                    parenteses.empilhar(caractere)
             }
         }
 
