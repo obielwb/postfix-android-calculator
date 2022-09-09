@@ -21,19 +21,20 @@ class PilhaVetor<T>:  IPilha<T>{
         p =  arrayOfNulls<Class<T>>(tamanho) as Array<T>
     }
 
-    override fun Empilhar(t: T) {
-        if ()
+    override fun empilhar(t: T) {
+        TODO()
     }
 
-    override fun Desempilhar(): T {
+    override fun desempilhar(): T {
         TODO("Not yet implemented")
     }
 
-    override fun Topo(): T {
+    override fun topo(): T {
         TODO("Not yet implemented")
     }
 
-    override fun DadosDaPilha(): List<T> {
+    override fun dadosDaPilha(): List<T> {
         TODO("Not yet implemented")
     }
+
 }

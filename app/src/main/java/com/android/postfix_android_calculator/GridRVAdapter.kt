@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.getSystemService
 
@@ -13,7 +14,7 @@ internal class GridRVAdapter (
         private val context: Context
     ): BaseAdapter() {
     private var layoutInflater: LayoutInflater? = null
-    private lateinit var operacaoTextView: TextView
+    private lateinit var operacaoButton: Button
 
     override fun getCount(): Int {
         return listaOperacoes.size
@@ -39,8 +40,8 @@ internal class GridRVAdapter (
             convertView = layoutInflater!!.inflate(R.layout.grid_item, null)
         }
 
-        operacaoTextView = convertView!!.findViewById(R.id.idOperacaoTextView)
-        operacaoTextView.text = listaOperacoes[position].label
+        operacaoButton = convertView!!.findViewById(R.id.idOperacaoButton)
+        operacaoButton.text = listaOperacoes[position].label
 
         return convertView
     }

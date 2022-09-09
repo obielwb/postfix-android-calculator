@@ -8,10 +8,11 @@
   android:layout_gravity="center"
   android:layout_margin="5dp"
   app:cardCornerRadius="5dp"
-  app:cardElevation="5dp">
+  app:cardElevation="5dp"
+app:cardBackgroundColor="#171716">
 
-    <TextView
-        android:id="@+id/idOperacaoTextView"
+    <Button
+        android:id="@+id/idOperacaoButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -19,6 +20,8 @@
         android:padding="4dp"
         android:text="@string/app_name"
         android:textAlignment="center"
-        android:textColor="#f69906"
-        android:background="@color/black"/>
+        android:textColor="#fff"
+        android:backgroundTint="#171716"
+        android:background="@drawable/rounded_shape"
+    />
 </androidx.cardview.widget.CardView>
