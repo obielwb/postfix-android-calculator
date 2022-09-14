@@ -2,13 +2,14 @@ package com.android.postfix_android_calculator
 
 class PilhaVetor<T>:  IPilha<T>{
     private var topo: Int = -1
-    private lateinit var p: Array<T>
+    private var p: Array<T>
 
-    var Tamanho: Int = 0
+    override val Tamanho: Int
         get() {
             return topo + 1
         }
-    var EstaVazia: Boolean = false
+
+    override val EstaVazia: Boolean
         get() {
             return topo < 0
         }
@@ -22,19 +23,32 @@ class PilhaVetor<T>:  IPilha<T>{
     }
 
     override fun empilhar(t: T) {
-        TODO()
+        if (Tamanho == p.size)
+            throw Exception("Pilha cheia (Stack Overflow)!")
+
+        p[topo++] = t
     }
 
     override fun desempilhar(): T {
-        TODO("Not yet implemented")
+        if (EstaVazia)
+            throw Exception("Pilha vazia (Stack Underflow)!")
+
+        return p[topo--]
     }
 
     override fun topo(): T {
-        TODO("Not yet implemented")
+        if (EstaVazia)
+            throw Exception("Pilha vazia (Stack Underflow)!")
+
+        return p[topo]
     }
 
     override fun dadosDaPilha(): List<T> {
-        TODO("Not yet implemented")
-    }
+        val dados = ArrayList<T>()
 
+        for (i in p)
+            dados.add(i)
+
+        return dados
+    }
 }

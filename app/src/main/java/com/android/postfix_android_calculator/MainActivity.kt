@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         operacoesGridView = findViewById(R.id.operacoesGridView)
-        listaOperacoes = ArrayList<GridViewModal>()
+        listaOperacoes = ArrayList()
 
         val operacoes = arrayOf("^", "/", "*", "-",
                                 "7", "8", "9", "+",
@@ -23,11 +23,10 @@ class MainActivity : AppCompatActivity() {
                                 "1", "2", "3", "(",
                                 "0", "=", "C", ")")
 
-        for (operacao in operacoes) {
+        for (operacao in operacoes)
             listaOperacoes = listaOperacoes + GridViewModal(operacao)
-        }
 
-        val operacaoAdapter = GridRVAdapter(listaOperacoes = listaOperacoes, this@MainActivity)
+        val operacaoAdapter = GridRVAdapter(listaOperacoes, this)
         
         operacoesGridView.adapter = operacaoAdapter
         

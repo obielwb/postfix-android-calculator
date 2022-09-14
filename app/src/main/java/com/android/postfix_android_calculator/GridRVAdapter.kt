@@ -29,7 +29,7 @@ internal class GridRVAdapter (
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        var convertView = convertView;
+        var convertView = convertView
 
         if (layoutInflater == null) {
             layoutInflater =
