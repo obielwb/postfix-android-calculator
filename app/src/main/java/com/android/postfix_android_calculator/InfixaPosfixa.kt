@@ -2,6 +2,7 @@ package com.android.postfix_android_calculator
 
 import com.android.postfix_android_calculator.exceptions.InicioComOperadorException
 import com.android.postfix_android_calculator.exceptions.OperadorSubsequenteException
+import kotlin.math.exp
 
 class InfixaPosfixa {
     fun validarEntrada(entrada: String, caractereDigitado: Char) {
@@ -35,14 +36,21 @@ class InfixaPosfixa {
     fun temParentesesBalanceados(expressao: String): Boolean {
         val parenteses = PilhaVetor<Char>();
 
+        // percorrimento da expressão para o balanceamento dos parênteses
         expressao.forEach { caractere ->
+            // se o caractere "da vez" da expressão for parênteses
             if (caractere == '(' || caractere == ')') {
+                // caso a pilha esteja vazia, é
+                // empilhado o primeiro caractere
                 if (parenteses.EstaVazia)
                     parenteses.empilhar(caractere)
 
-                else if (parenteses.Topo() == '(' && caractere == ')')
+                // se há um balanceamento entre o parênteses do topo
+                // da pilha e o parênteses digitado, a pilha é desempilhada
+                else if (parenteses.topo() == '(' && caractere == ')')
                     parenteses.desempilhar()
 
+                // caso contrário, o parênteses é empilhado
                 else
                     parenteses.empilhar(caractere)
             }
@@ -53,7 +61,46 @@ class InfixaPosfixa {
 
     fun converterParaInfixa(expressao: String): Pair<String, DoubleArray> {
         var infixa: String = expressao.replace("(-", "(@").replace("(+", "(")
-        var valores
+
+        // vetor de valores
+        var valores = DoubleArray(expressao.length)
+
+        // contador v para o vetor de valores
+        var v = 0
+
+        var i = 0
+        while (i < expressao.length) {
+            i++
+
+            var caractere: Char = expressao[i]
+
+            if (".0123456789".contains(caractere)) {
+                // inicia-se o processo para a obtenção máxima do valor
+                var valor = caractere.toString()
+                var j = i + 1
+                var fim = false
+
+                if (j < expressao.length) {
+                    while (".0123456789".contains(expressao[j]) && !fim) {
+                        valor += expressao[j]
+
+                        if (j + 1 == expressao.length)
+                            fim = true
+
+                        else
+                            j++
+                    }
+                }
+
+                var regex = Regex(Regex.escape(valor))
+                infixa = regex.replace(infixa, ((65 + v).toChar()).toString())
+
+                valores[v++] = valor.toDouble()
+                i = j
+            }
+        }
+
+        return Pair(infixa, valores)
     }
 
     fun converterParaPosfixa(infixa: String): String {
@@ -67,27 +114,27 @@ class InfixaPosfixa {
             }
             else {
                 if (caractere == '(')
-                    operadores.Empilhar(caractere)
+                    operadores.empilhar(caractere)
                 else if (caractere == ')') {
-                    while (!operadores.EstaVazia && operadores.Topo() != '(')
-                        posfixa += operadores.Desempilhar()
+                    while (!operadores.EstaVazia && operadores.topo() != '(')
+                        posfixa += operadores.desempilhar()
 
-                    operadores.Desempilhar()
+                    operadores.desempilhar()
                 }
                 else {
                     while (
                         !operadores.EstaVazia &&
-                        precedencia(caractere) <= precedencia(operadores.Topo())
+                        precedencia(caractere) <= precedencia(operadores.topo())
                     )
-                        posfixa += operadores.Desempilhar()
+                        posfixa += operadores.desempilhar()
 
-                    operadores.Empilhar(caractere)
+                    operadores.empilhar(caractere)
                 }
             }
         }
 
         while (!operadores.EstaVazia)
-            posfixa += operadores.Desempilhar()
+            posfixa += operadores.desempilhar()
 
         return posfixa
     }
@@ -100,7 +147,7 @@ class InfixaPosfixa {
             }
         }
 
-        posfixa = posfixa.replace("@", "")
+        var posfixa = posfixa.replace("@", "")
 
         val operacoes = PilhaVetor<Double>()
 
@@ -111,17 +158,16 @@ class InfixaPosfixa {
                 // obtém o operando relativo à letra
                 var operando = valores[(caractere - 65).code];
 
-                operacoes.Empilhar(operando);
+                operacoes.empilhar(operando);
             }
 
             // se o caractere for um operador
-            else
-            {
+            else {
                 // desempilha os operandos em ordem
-                var operandoDois = operacoes.Desempilhar();
-                var operandoUm = operacoes.Desempilhar();
+                var operandoDois = operacoes.desempilhar();
+                var operandoUm = operacoes.desempilhar();
 
-                var operacao = 0;
+                var operacao = 0.0;
 
                 // switch para realização da operação entre
                 // operando um, operador e operando dois
@@ -130,12 +176,11 @@ class InfixaPosfixa {
                     caractere == '-' -> operacao = operandoUm - operandoDois
                     caractere == '*' -> operacao = operandoUm * operandoDois
                     caractere == '/' -> operacao = operandoUm / operandoDois
-                    caractere == '^' -> operacao = Math.Pow(operandoUm, operandoDois)
+                    caractere == '^' -> operacao = Math.pow(operandoUm, operandoDois)
                 }
-
-                operacoes.Empilhar(operacao);
+                operacoes.empilhar(operacao);
             }
-
-            return operacoes.Desempilhar()
         }
+        return operacoes.desempilhar()
     }
+}
