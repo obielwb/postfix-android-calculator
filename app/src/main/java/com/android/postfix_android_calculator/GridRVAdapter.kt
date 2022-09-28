@@ -29,19 +29,19 @@ internal class GridRVAdapter (
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        var convertView = convertView
+        var convertView = convertView;
 
         if (layoutInflater == null) {
             layoutInflater =
-                context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                    context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         }
 
         if (convertView == null) {
             convertView = layoutInflater!!.inflate(R.layout.grid_item, null)
         }
 
-        operacaoButton = convertView!!.findViewById(R.id.idOperacaoButton)
-        operacaoButton.text = listaOperacoes[position].label
+        operacaoTextView = convertView!!.findViewById(R.id.idOperacaoTextView)
+        operacaoTextView.text = listaOperacoes[position].label
 
         return convertView
     }
