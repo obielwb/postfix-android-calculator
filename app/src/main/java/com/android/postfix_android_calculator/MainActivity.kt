@@ -42,15 +42,38 @@ class MainActivity : AppCompatActivity() {
         
         operacoesGridView.adapter = operacaoAdapter
         var text: TextView = findViewById(R.id.infixaTextView)
-
+1
         operacoesGridView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             var infixaPosfixa = InfixaPosfixa()
 
             var caractereDigitado: Char = listaOperacoes[position].label.toCharArray()[0]
 
-            var expressao = visorEditText.text.toString()
+            Toast.makeText(applicationContext, caractereDigitado.toString(), Toast.LENGTH_SHORT)
+            var expressao: String = visorEditText.text.toString()
 
-            if (!"C=".contains(caractereDigitado)) {
+            if (caractereDigitado == 'C') {
+                visorEditText.setText("")
+            } else if (caractereDigitado == '=') {
+                if (expressao.isNotEmpty()) {
+                    if (!infixaPosfixa.temParentesesBalanceados(expressao)) {
+                        Toast.makeText(
+                            applicationContext, "A expressão não possui parênteses balanceados",
+                            Toast.LENGTH_LONG
+                        )
+                    }
+                    else {
+                        var (infixa, valores) = infixaPosfixa.converterParaInfixa(expressao)
+                        var posfixa = infixaPosfixa.converterParaPosfixa(expressao)
+
+                        var resultado: String = infixaPosfixa.calcularResultado(posfixa, valores).toString()
+
+                        infixaTextView.setText("Infixa   $infixa")
+                        posfixaTextView.setText("Pósfixa   $posfixa")
+
+                        visorEditText.setText(resultado)
+                    }
+                }
+            } else {
                 try {
                     infixaPosfixa.validarEntrada(expressao, caractereDigitado)
                 } catch (e: OperadorSubsequenteException) {
@@ -70,27 +93,9 @@ class MainActivity : AppCompatActivity() {
 
                     visorEditText.setText("")
                 }
-                visorEditText.setText(expressao + listaOperacoes[position].label)
-            } else if (caractereDigitado == 'C') {
-                visorEditText.setText("")
-            } else if (caractereDigitado == '=') {
-                if (expressao.isNotEmpty()) {
-                    if (!infixaPosfixa.temParentesesBalanceados(expressao))
-                        Toast.makeText(
-                            applicationContext, "A expressão não possui parênteses balanceados",
-                            Toast.LENGTH_LONG
-                        )
-                    else {
-                        var (infixa, valores) = infixaPosfixa.converterParaInfixa(expressao)
-                        var posfixa = infixaPosfixa.converterParaPosfixa(expressao)
+                finally {
 
-                        var resultado: String = infixaPosfixa.calcularResultado(posfixa, valores).toString()
-
-                        infixaTextView.setText("Infixa   $infixa")
-                        posfixaTextView.setText("Pósfixa   $posfixa")
-
-                        visorEditText.setText(resultado)
-                    }
+                    visorEditText.setText(expressao + listaOperacoes[position].label)
                 }
             }
         }
