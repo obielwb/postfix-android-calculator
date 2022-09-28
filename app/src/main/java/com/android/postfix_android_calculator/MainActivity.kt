@@ -81,7 +81,15 @@ class MainActivity : AppCompatActivity() {
                             Toast.LENGTH_LONG
                         )
                     else {
-                        infixaTextView.setText()
+                        var (infixa, valores) = infixaPosfixa.converterParaInfixa(expressao)
+                        var posfixa = infixaPosfixa.converterParaPosfixa(expressao)
+
+                        var resultado: String = infixaPosfixa.calcularResultado(posfixa, valores).toString()
+
+                        infixaTextView.setText("Infixa   $infixa")
+                        posfixaTextView.setText("Pósfixa   $posfixa")
+
+                        visorEditText.setText(resultado)
                     }
                 }
             }
