@@ -14,14 +14,14 @@ internal class GridRVAdapter (
         private val context: Context
     ): BaseAdapter() {
     private var layoutInflater: LayoutInflater? = null
-    private lateinit var operacaoButton: Button
+    private lateinit var operacaoTextView: TextView
 
     override fun getCount(): Int {
         return listaOperacoes.size
     }
 
-    override fun getItem(position: Int): Any? {
-        return null
+    override fun getItem(position: Int): GridViewModal {
+        return listaOperacoes[position]
     }
 
     override fun getItemId(position: Int): Long {

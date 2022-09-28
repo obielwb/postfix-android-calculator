@@ -15,25 +15,30 @@ class PilhaVetor<T>:  IPilha<T>{
         }
 
     constructor() {
-        p = arrayOfNulls<Class<T>>(500) as Array<T>
+        p =  arrayOfNulls<Any?>(500) as Array<T>
     }
 
     constructor(tamanho: Int) {
-        p =  arrayOfNulls<Class<T>>(tamanho) as Array<T>
+        p =  arrayOfNulls<Any?>(tamanho) as Array<T>
     }
 
     override fun empilhar(t: T) {
         if (Tamanho == p.size)
             throw Exception("Pilha cheia (Stack Overflow)!")
 
-        p[topo++] = t
+        topo += 1
+        p[topo] = t
     }
 
     override fun desempilhar(): T {
         if (EstaVazia)
             throw Exception("Pilha vazia (Stack Underflow)!")
 
-        return p[topo--]
+
+        val dado = p[topo]
+        topo -= 1
+
+        return dado
     }
 
     override fun topo(): T {

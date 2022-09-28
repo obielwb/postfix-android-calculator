@@ -30,9 +30,10 @@ app:cardBackgroundColor="#171716">
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="5dp"
-        android:padding="4dp"
+        android:paddingHorizontal="4dp"
+        android:paddingVertical="10dp"
         android:text="@string/app_name"
         android:textAlignment="center"
-        android:textColor="#f69906"
-        android:background="@color/black"/>
+        android:textColor="#fff"
+        android:background="#171716"/>
 </androidx.cardview.widget.CardView>

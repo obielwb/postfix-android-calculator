@@ -36,50 +36,48 @@ class MainActivity : AppCompatActivity() {
                                 "0", "=", "C", ")")
 
         for (operacao in operacoes)
-            listaOperacoes = listaOperacoes + GridViewModal(operacao)
+            listaOperacoes += GridViewModal(operacao)
 
-        val operacaoAdapter = GridRVAdapter(listaOperacoes, this)
-        
-        operacoesGridView.adapter = operacaoAdapter
-        var text: TextView = findViewById(R.id.infixaTextView)
-1
+        operacoesGridView.adapter = GridRVAdapter(listaOperacoes, this)
+
         operacoesGridView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-            var infixaPosfixa = InfixaPosfixa()
+            val infixaPosfixa = InfixaPosfixa()
 
-            var caractereDigitado: Char = listaOperacoes[position].label.toCharArray()[0]
+            val caractereDigitado = listaOperacoes[position].label[0]
 
-            Toast.makeText(applicationContext, caractereDigitado.toString(), Toast.LENGTH_SHORT)
-            var expressao: String = visorEditText.text.toString()
+            Toast.makeText(applicationContext, caractereDigitado.toString(), Toast.LENGTH_LONG)
+            val expressao = visorEditText.text.toString()
 
             if (caractereDigitado == 'C') {
                 visorEditText.setText("")
+                infixaTextView.setText("Infixa")
+                posfixaTextView.setText("Pósfixa")
             } else if (caractereDigitado == '=') {
                 if (expressao.isNotEmpty()) {
                     if (!infixaPosfixa.temParentesesBalanceados(expressao)) {
                         Toast.makeText(
-                            applicationContext, "A expressão não possui parênteses balanceados",
+                            applicationContext, "A expressão não possui parênteses balanceados!",
                             Toast.LENGTH_LONG
                         )
                     }
                     else {
-                        var (infixa, valores) = infixaPosfixa.converterParaInfixa(expressao)
-                        var posfixa = infixaPosfixa.converterParaPosfixa(expressao)
-
-                        var resultado: String = infixaPosfixa.calcularResultado(posfixa, valores).toString()
+                        val (infixa, valores) = infixaPosfixa.converterParaInfixa(expressao)
+                        val posfixa = infixaPosfixa.converterParaPosfixa(infixa)
+                        val resultado = infixaPosfixa.calcularResultado(posfixa, valores).toString()
 
                         infixaTextView.setText("Infixa   $infixa")
                         posfixaTextView.setText("Pósfixa   $posfixa")
-
                         visorEditText.setText(resultado)
                     }
                 }
             } else {
                 try {
                     infixaPosfixa.validarEntrada(expressao, caractereDigitado)
+                    visorEditText.setText(expressao + listaOperacoes[position].label)
                 } catch (e: OperadorSubsequenteException) {
                     Toast.makeText(
-                        applicationContext, e.message,
-                        Toast.LENGTH_SHORT
+                        applicationContext, e.message.toString(),
+                        Toast.LENGTH_LONG
                     )
 
                     visorEditText.setText(
@@ -87,27 +85,12 @@ class MainActivity : AppCompatActivity() {
                     )
                 } catch (e: InicioComOperadorException) {
                     Toast.makeText(
-                        applicationContext, e.message,
-                        Toast.LENGTH_SHORT
+                        applicationContext, e.message.toString(),
+                        Toast.LENGTH_LONG
                     )
-
                     visorEditText.setText("")
-                }
-                finally {
-
-                    visorEditText.setText(expressao + listaOperacoes[position].label)
                 }
             }
         }
-
-        /*operacoesGridView.onItemClickListener = object : AdapterView.OnItemClickListener {
-            override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                // Get the GridView selected/clicked item text
-                val selectedItem = parent.getItemAtPosition(position).toString()
-
-                // Display the selected/clicked item text and position on TextView
-                text.text = "${listaOperacoes[position].label}GridView item clicked : $selectedItem \nAt index position : $position"
-            }
-        }*/
     }
 }

@@ -8,7 +8,9 @@
     tools:context=".MainActivity"
     android:background="#010101"
     android:orientation="vertical"
-    android:paddingHorizontal="16dp">
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="10dp">
+
   <EditText
       android:id="@+id/visorEditText"
       android:layout_width="match_parent"
@@ -19,7 +21,7 @@
       android:background="@null"
       android:textSize="32sp"
       app:layout_constraintTop_toTopOf="parent"
-     />
+    />
 
   <TextView
       android:id="@+id/posfixaTextView"
@@ -29,16 +31,28 @@
       android:textColor="#afafaf"
       app:layout_constraintBaseline_toTopOf="@id/infixaTextView"
       tools:ignore="MissingConstraints"
-      android:layout_marginBottom="8dp"
-  />
+    />
+
   <TextView
       android:id="@+id/infixaTextView"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="Infixa "
       android:textColor="#afafaf"
+      app:layout_constraintBaseline_toTopOf="@id/unariosTextView"
+      tools:ignore="MissingConstraints"
+    />
+
+  <TextView
+      android:id="@+id/unariosTextView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Unários devem ser estar entre parênteses"
+      android:textColor="#afafaf"
       app:layout_constraintBaseline_toTopOf="@id/operacoesGridView"
-      tools:ignore="MissingConstraints"/>
+      android:layout_marginBottom="8dp"
+      tools:ignore="MissingConstraints"
+    />
 
   <GridView
       android:id="@+id/operacoesGridView"
@@ -50,5 +64,6 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintBottom_toBottomOf="parent"
-  />
+    />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
